@@ -1,0 +1,49 @@
+version: "3.7"
+
+networks:
+  phonebook:
+    name: phonebook
+
+services:
+  php.phonebook:
+    build: ./.docker/php
+    container_name: phonebook_php
+    restart: "no"
+    networks:
+      - phonebook
+    ports:
+      - 9001:9000
+    volumes:
+      - "./:/var/www:cached"
+    links:
+      - mariadb.phonebook
+
+  nginx.phonebook:
+    build: ./.docker/nginx
+    container_name: 'phonebook_nginx'
+    restart: "no"
+    networks:
+      - phonebook
+    ports:
+      - "8088:8080"
+    volumes:
+      - "./:/var/www/:cached"
+      - "./.docker/logs/nginx:/var/log/nginx:cached"
+    depends_on:
+      - php.phonebook
+
+  mariadb.phonebook:
+    image: mariadb:10.3.8
+    container_name: 'phonebook_mariadb'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_USER: 'phonebook'
+      MYSQL_PASSWORD: 'secretpassword'
+      MYSQL_DATABASE: 'phonebook'
+    networks:
+      - phonebook
+    ports:
+      - '3399:3306'
+    volumes:
+      - './.docker/mariadb/mysql:/var/lib/mysql'
+
