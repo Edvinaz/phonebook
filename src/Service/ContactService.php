@@ -32,7 +32,7 @@ class ContactService
 
     public function updateContact(array $contactData, UserInterface $user): Contact
     {
-        $contact = $this->findContact($contactData, $user);
+        $contact = $this->contactRepository->findContactByIdAndOwner($contactData, $user);
 
         $contact->setName($contactData['name']);
         $contact->setPhone($contactData['phone']);
@@ -44,22 +44,9 @@ class ContactService
 
     public function deleteContact(array $contactData, UserInterface $user): Contact
     {
-        $contact = $this->findContact($contactData, $user);
+        $contact = $this->contactRepository->findContactByIdAndOwner($contactData, $user);
         $this->entityManager->remove($contact);
         $this->entityManager->flush();
-
-        return $contact;
-    }
-
-    protected function findContact(array $contactData, UserInterface $user): Contact
-    {
-        $contact = $this->contactRepository->findBy(['id' => $contactData['id'], 'owner' => $user->getId()], [], 1);
-
-        if (!empty($contact)) {
-            $contact = $contact[0];
-        } else {
-            throw new \Exception('Contact not found');
-        }
 
         return $contact;
     }
