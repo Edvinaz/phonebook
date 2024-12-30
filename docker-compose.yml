@@ -47,6 +47,21 @@ services:
     volumes:
       - './.docker/mariadb/mysql:/var/lib/mysql'
 
+  react.phonebook:
+    build:
+      context: .
+      dockerfile: ./.docker/react/Dockerfile
+    container_name: phonebook_react
+    volumes:
+      - ./react:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    working_dir: /usr/src/app
+    command: [ "npm", "start" ]
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
 
 ###> doctrine/doctrine-bundle ###
   database:
