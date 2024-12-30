@@ -12,6 +12,9 @@
 
 `docker exec -it phonebook_mariadb mysql -u root -p'root' -e "CREATE DATABASE phonebook_test; GRANT ALL PRIVILEGES ON phonebook_test.* TO 'phonebook'@'%' IDENTIFIED BY 'secretpassword'; FLUSH PRIVILEGES;"
 `
+## Access
+GUI: http://localhost:3000
+API: http://localhost:8088
 
 ## Endpoints
 
