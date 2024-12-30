@@ -10,6 +10,9 @@
 
 `docker exec -it phonebook_php php bin/console doctrine:migrations:migrate`
 
+`docker exec -it phonebook_mariadb mysql -u root -p'root' -e "CREATE DATABASE phonebook_test; GRANT ALL PRIVILEGES ON phonebook_test.* TO 'phonebook'@'%' IDENTIFIED BY 'secretpassword'; FLUSH PRIVILEGES;"
+`
+
 ## Endpoints
 
 | Endpoint          | Method(s) | Auth Required | Content-Type | URL                          |
